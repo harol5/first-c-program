@@ -3,6 +3,10 @@
 #include <math.h>
 #include <string.h>
 
+int xArrLength;
+int yArrLength;
+int zArrLength;
+
 char name()
 {
      return 'w';
@@ -279,11 +283,41 @@ void printString(char str[])
      printf("\n");
 }
 
-void printMultiDimentionalArray(int matrix[10][10])
+void printMultiDimentionalArray(char matrix[xArrLength][yArrLength])
 {
      printf("==== printMultiDimentionalArray func ====\n");     
      printf("%lu\n", sizeof(*matrix));
      printf("%d\n", **matrix);
+
+     char letter;
+     char letterTwo;
+     for (int i = 0; i < xArrLength; i++){
+
+          if (i != 0 && i % 2 != 0) {
+               letter = ' ';
+               letterTwo = 'T';
+          }else {
+               letter = 'T';
+               letterTwo = ' ';
+          }  
+
+          char (*p_arr)[yArrLength] = matrix;      
+
+          for (int j = 0; j < yArrLength; j++) {
+               if (j != 0 && j % 2 != 0) {
+                    p_arr = letterTwo;
+               }else {
+                    p_arr = letter;
+               }
+               
+               printf("%c",*p_arr);
+               p_arr++;
+          }
+
+          // letter++;
+          matrix++;
+          printf("\n");
+     }
      
 }
 
@@ -395,11 +429,12 @@ char *concatStrToHeap(char firstName[], char lastName[], int strLength)
 
 int main()
 {              
-     int letterMatrix[10][10];
-     int (*p_letterMatrix)[10] = letterMatrix;
+     char letterMatrix[100][100];
+     char (*p_letterMatrix)[100] = letterMatrix;
 
-     printf("%lu\n", sizeof(letterMatrix));
-     printf("%p\n", letterMatrix);
+     xArrLength = 30;
+     yArrLength = 150;
+
      
      printMultiDimentionalArray(letterMatrix);
                
