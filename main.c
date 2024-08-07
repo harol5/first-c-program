@@ -111,13 +111,15 @@ void pointers()
      // pointer variable (memory address);
      int *p_age = &age;
 
+     // size of a pointer variable is 8 bytes on my computer.
+     printf("%lu\n", sizeof(p_age));
+
      // Dereferencing (access the value at given addrees and change value);
      *p_age = 29;
      printf("%d\n", age); // prints '29'.
 
      // pointer variable that hold the memory address of another pointer variable.
-     int **p_p_age = &p_age;
-     
+     int **p_p_age = &p_age;   
 }
 
 // pass by reference.
@@ -130,31 +132,101 @@ void increment(int *number)
 void arrays()
 {
      int ages[] = {23,45,67,67,89};
-     int *p_ages = ages;
+     int *p_ages = ages;     
 
      char grades[] = {'h','a','r','o','l','\0'};
 
      char name[] = "harol";
 
      // "ages" is a reference to the first int in the array. (not "&" required).
-     printf("%p\n", ages);
-     printf("%lu\n", sizeof(ages));
+     printf("%p\n", ages);     
      printf("%p\n", p_ages);
-     printf("%lu\n", sizeof(p_ages));
+     
 
      // I can access the values of the array by Dereferencing and pointer arithmethic.
-     printf("%d\n", *ages); // first int in array.
+     // first int in array.
+     printf("%d\n", *ages); 
      printf("%d\n", ages[0]);
      printf("%d\n", *p_ages);
 
-     printf("%d\n", *(ages + 1)); // second int in array. (using pointer arithmethic).
+     // second int in array. (using pointer arithmethic).
+     printf("%d\n", *(ages + 1)); 
      printf("%d\n", ages[1]);
+     printf("%d\n", *(p_ages + 1));
+     printf("%d\n", *(++p_ages));
+     printf("%d\n", p_ages[0]);     
+}
+
+void multidimentionalArrays()
+{
+     int matrix[3][4] = {
+          {10,11,12,13},
+          {20,21,22,23},
+          {30,31,32,33}
+     };
+
+     printf("---- first array ----\n");
+     printf("%p\n", matrix); // address of first array.
+     printf("Size of this array is %lu bytes\n", sizeof(*matrix));
+     printf("Size of each element of array is %lu bytes\n", sizeof(*(*matrix)));
+     printf("%d\n", *(*matrix)); // from right to left, first * gives me an int pointer to the first int of the first array.
+     printf("%d\n", *(*matrix + 1));
+     printf("%d\n", *(*matrix + 2));
+     printf("%d\n", *(*matrix + 3));
+
+     /*
+      ========== output ==========
+      ---- first array ----
+      0x7ff7b9be01a0
+      Size of this array is 16 bytes
+      Size of each element of array is 4 bytes
+      10
+      11
+      12
+      13
+     */
+
+     printf("---- second array ----\n");
+     printf("%p\n", matrix + 1); // address of second array.
+     printf("%d\n", *(*(matrix + 1))); // from right to left, first * gives me an int pointer to the first int of the first array.
+     printf("%d\n", *(*(matrix + 1) + 1));
+     printf("%d\n", *(*(matrix + 1) + 2));
+     printf("%d\n", *(*(matrix + 1) + 3));
+
+     /*
+      ========== output ==========
+      ---- second array ----
+      0x7ff7b9be01b0
+      20
+      21
+      22
+      23
+     */
+
+     printf("---- third array ----\n");
+     printf("%p\n", matrix + 2);
+     printf("%d\n", *(*(matrix + 2)));
+     printf("%d\n", *(*(matrix + 2) + 1));
+     printf("%d\n", *(*(matrix + 2) + 2));
+     printf("%d\n", *(*(matrix + 2) + 3));
+
+     /*
+      ========== output ==========
+      ---- third array ----
+      0x7ff7b9be01c0
+      30
+      31
+      32
+      33
+     */
 }
 
 /*
 Only the address of the first element will be pass.
-so basically "int arr[]" = "int *arr",
-for that reason we must pass the size as well.
+so basically "int arr[]" = "int *arr", or "char str[]" = "char *str"
+for that reason, when dealing with int array we must pass the size as well.
+for string is not required as long as we use string literals or
+we terminate the string array with a null character "\0".
 */ 
 int sumOfArrayValues(int arr[], int size)
 {
@@ -167,8 +239,26 @@ int sumOfArrayValues(int arr[], int size)
      return sum;
 }
 
+void printString(char str[])
+{
+     // This is one way to iterate, BUT...
+     int i = 0;
+     while (str[i] != '\0') {
+          printf("%c",str[i]);
+          i++;
+     }
+     printf("\n");
+
+     // remenber, "str" is just really a pointer, so i can simplify the loop with pointer arithmetic
+     while (*str != '\0') {
+          printf("%c", *str);
+          str++;
+     }
+     printf("\n");
+}
+
 int main()
 {              
-     arrays();
+     multidimentionalArrays();
      return 0;
 }
