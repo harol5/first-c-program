@@ -165,6 +165,12 @@ void multidimentionalArrays()
           {30,31,32,33}
      };
 
+     // Pointer to an integers array with size 3.
+     // remenber that "matrix" is actually a pointer to 
+     // a an integers array with size 3, that's why
+     // we use the syntax "int *p_arrayInt[n]".
+     int (*p_matrix)[4] = matrix;
+
      printf("---- first array ----\n");
      printf("%p\n", matrix); // address of first array.
      printf("Size of this array is %lu bytes\n", sizeof(*matrix));
@@ -221,6 +227,20 @@ void multidimentionalArrays()
      */
 }
 
+void cubeArray()
+{
+     int cube[4][4][4] = {
+          { {111,112,113,114}, {121,122,123,124}, {131,132,133,134}, {141,142,143,144} },
+          { {211,212,213,214}, {221,222,223,224}, {231,232,233,234}, {241,242,243,244} },
+          { {311,312,313,314}, {321,322,323,324}, {331,332,333,334}, {341,342,343,344} },
+          { {411,412,413,414}, {421,422,423,424}, {431,432,433,434}, {441,442,443,444} },
+     };
+
+
+     printf("this cude has a size of %lu bytes\n", sizeof(cube));
+     printf("%d\n",*(*(*(cube + 3) + 3) + 3)); // prints "444".
+}
+
 /*
 Only the address of the first element will be pass.
 so basically "int arr[]" = "int *arr", or "char str[]" = "char *str"
@@ -230,10 +250,12 @@ we terminate the string array with a null character "\0".
 */ 
 int sumOfArrayValues(int arr[], int size)
 {
-     int i, sum;
-
+     int i;
+     int sum = 0;
+     
      for (i = 0; i < size; i++) {
-          sum += arr[i];
+          sum += *(arr + i);
+          // sum += arr[i];
      }
 
      return sum;
@@ -257,8 +279,21 @@ void printString(char str[])
      printf("\n");
 }
 
+void printMultiDimentionalArray(int matrix[3][4])
+{
+     printf("%lu\n", sizeof(*matrix));
+     printf("%d\n", **matrix);
+}
+
 int main()
 {              
-     multidimentionalArrays();
+     int matrix[3][4] = {
+          {10,11,12,13},
+          {20,21,22,23},
+          {30,31,32,33}
+     };
+
+     printMultiDimentionalArray(matrix);
+     
      return 0;
 }
