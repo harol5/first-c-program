@@ -285,15 +285,71 @@ void printMultiDimentionalArray(int matrix[3][4])
      printf("%d\n", **matrix);
 }
 
+void memoryHeap()
+{
+     // ============= malloc() =================== //
+     // allocation of memory in heap.
+     int *p_ages = (int*)malloc(10 * sizeof(int));
+
+     *p_ages = 23;
+     *(p_ages + 1) = 65;
+     
+     printf("==== malloc() =====\n");
+     printf("%p\n",p_ages);
+     for (int i = 0; i < 10; i++){
+          if (i < 2) continue;
+          p_ages[i] = *(p_ages + 1) - i;
+          printf("%d\n",p_ages[i]);
+     }
+
+     // ============= calloc() =================== //
+     // similar to malloc but initialize values to 0;
+     char *p_grades = (char*)calloc(10, sizeof(char));
+
+     printf("==== calloc() =====\n");
+     printf("%p\n",p_grades);
+     for (int i = 0; i < 10; i++){
+          *(p_grades + i) = 'A' + i;          
+          printf("%c\n", *(p_grades + i));
+     }
+
+     // ============= realloc() =================== //
+     // modifies the size of an existing block of memory.
+     // might keep the same address of the previous pointer
+     // or get a new one, copy the elements and freed previous pointer. 
+     int *p_agesTwo = (int*)realloc(p_ages, 20 * sizeof(int));
+
+     printf("==== realloc() =====\n");
+     printf("original pointer location: %p\n",p_ages);
+     printf("relocated pointer location: %p\n",p_agesTwo);
+     printf("pointer to block is %s\n", p_ages == p_agesTwo ? "the same location" : "diferent location");
+
+     for (int i = 0; i < 20; i++){
+          printf("%d\n",p_agesTwo[i]);
+     }
+
+     // ============= free() =================== //
+     // after you are done using mempry block, you MUST FREE IT.
+     // free(p_ages);
+     free(p_grades);
+     free(p_agesTwo);
+     
+     // also, make sure to assign NULL to pointer variable to delete refrence.
+     p_ages = NULL;
+     p_grades = NULL;
+     p_agesTwo = NULL;
+}
+
 int main()
 {              
-     int matrix[3][4] = {
-          {10,11,12,13},
-          {20,21,22,23},
-          {30,31,32,33}
-     };
+     // int matrix[3][4] = {
+     //      {10,11,12,13},
+     //      {20,21,22,23},
+     //      {30,31,32,33}
+     // };
+     // printMultiDimentionalArray(matrix);
 
-     printMultiDimentionalArray(matrix);
+     memoryHeap();
      
      return 0;
 }
