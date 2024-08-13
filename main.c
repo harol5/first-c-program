@@ -279,10 +279,12 @@ void printString(char str[])
      printf("\n");
 }
 
-void printMultiDimentionalArray(int matrix[3][4])
+void printMultiDimentionalArray(int matrix[10][10])
 {
+     printf("==== printMultiDimentionalArray func ====\n");     
      printf("%lu\n", sizeof(*matrix));
      printf("%d\n", **matrix);
+     
 }
 
 void memoryHeap()
@@ -340,16 +342,66 @@ void memoryHeap()
      p_agesTwo = NULL;
 }
 
+void concatStrToBuffer(char firtName[], char lastName[], char buffer[])
+{
+     while (*firtName != '\0') {
+          *buffer = *firtName;
+          firtName++;
+          buffer++;          
+     }
+
+     *buffer++ = ' ';
+
+     while (*lastName != '\0') {
+          *buffer = *lastName;
+          lastName++;
+          buffer++;          
+     }
+
+     *buffer = '\0';
+}
+
+// Returning pointer from a function.
+char *concatStrToHeap(char firstName[], char lastName[], int strLength)
+{
+     // allocate memory.
+     char *str = (char*)malloc(sizeof(char) * strLength);
+
+     /*
+     because the pointer variable used to get the memory address returned by "malloc"
+     will be incremented by the "while" loop, I should store the initial address of the allocated block
+     in a separate pointer variable.
+     */
+     char *p_str = str;
+     
+     while (*firstName != '\0')
+     {          
+          *str = *firstName;          
+          firstName++;
+          str++;
+     }     
+     *str++ = ' ';
+
+     while (*lastName != '\0')
+     {          
+          *str = *lastName;
+          lastName++;
+          str++;
+     }     
+     *str = '\0';
+     
+     return p_str;
+}
+
 int main()
 {              
-     // int matrix[3][4] = {
-     //      {10,11,12,13},
-     //      {20,21,22,23},
-     //      {30,31,32,33}
-     // };
-     // printMultiDimentionalArray(matrix);
+     int letterMatrix[10][10];
+     int (*p_letterMatrix)[10] = letterMatrix;
 
-     memoryHeap();
+     printf("%lu\n", sizeof(letterMatrix));
+     printf("%p\n", letterMatrix);
      
+     printMultiDimentionalArray(letterMatrix);
+               
      return 0;
 }
