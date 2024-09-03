@@ -106,7 +106,7 @@ void workingWithStructs()
      strcpy( studentOne.name, "harol");
 }
 
-// basics.
+// == basics ==.
 void pointers() 
 {
      //========= Pointers
@@ -126,7 +126,7 @@ void pointers()
      int **p_p_age = &p_age;   
 }
 
-// pass by reference.
+// == pass by reference ==.
 void increment(int *number)
 {
      // pass value by reference.
@@ -295,26 +295,22 @@ void printMultiDimentionalArray(char matrix[xArrLength][yArrLength])
 
           if (i != 0 && i % 2 != 0) {
                letter = ' ';
-               letterTwo = 'T';
+               letterTwo = '.';
           }else {
-               letter = 'T';
+               letter = '.';
                letterTwo = ' ';
-          }  
-
-          char (*p_arr)[yArrLength] = matrix;      
+          }      
 
           for (int j = 0; j < yArrLength; j++) {
-               if (j != 0 && j % 2 != 0) {
-                    p_arr = letterTwo;
-               }else {
-                    p_arr = letter;
+               if (j != 0 && j % 2 != 0) {                    
+                    *(*matrix + j) = letterTwo;
+               }else {                    
+                    *(*matrix + j) = letter;
                }
                
-               printf("%c",*p_arr);
-               p_arr++;
+               printf("%c",*(*matrix + j));               
           }
-
-          // letter++;
+          
           matrix++;
           printf("\n");
      }
@@ -395,7 +391,7 @@ void concatStrToBuffer(char firtName[], char lastName[], char buffer[])
      *buffer = '\0';
 }
 
-// Returning pointer from a function.
+// == Returning pointer from a function ==.
 char *concatStrToHeap(char firstName[], char lastName[], int strLength)
 {
      // allocate memory.
@@ -427,16 +423,49 @@ char *concatStrToHeap(char firstName[], char lastName[], int strLength)
      return p_str;
 }
 
+
+// == function pointers ==.
+int sumCallBack(int a, int b){
+     return a + b;
+}
+
+// higher order function. (func as param)
+int doSum(int (*p_sumFunc)(int,int), int numOne, int numTwo)
+{
+     return p_sumFunc(numOne,numTwo);
+}
+
+
+void pointerToFunc()
+{
+     // This is how we create pointer varible to a function.
+     int (*p_func)(int,int) = &sumCallBack;
+
+     // Dereferencing
+     int sum = (*p_func)(2,2);
+     printf("%d\n",sum);
+
+     // OR!! - you can do it without "&".
+     int (*p_funcTwo)(int,int) = sumCallBack;
+
+     // Dereferencing
+     int sumTwo = p_funcTwo(sum, sum);
+     printf("%d\n",sumTwo);
+
+     // using higher order func.
+     int sumThree = doSum(sumCallBack, sumTwo, sumTwo);
+     printf("%d\n",sumThree);
+}
+
 int main()
-{              
-     char letterMatrix[100][100];
-     char (*p_letterMatrix)[100] = letterMatrix;
-
+{    
      xArrLength = 30;
-     yArrLength = 150;
+     yArrLength = 150;          
+     char letterMatrix[xArrLength][yArrLength];
+     char (*p_letterMatrix)[yArrLength] = letterMatrix;
 
-     
-     printMultiDimentionalArray(letterMatrix);
+     // printMultiDimentionalArray(letterMatrix);
+     pointerToFunc();
                
      return 0;
 }
