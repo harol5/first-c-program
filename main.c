@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include "linked-list.c"
 
 int xArrLength;
 int yArrLength;
@@ -302,9 +303,9 @@ void printMultiDimentionalArray(char matrix[xArrLength][yArrLength])
           }      
 
           for (int j = 0; j < yArrLength; j++) {
-               if (j != 0 && j % 2 != 0) {                    
+               if (j != 0 && j % 2 != 0) {  // even.                  
                     *(*matrix + j) = letterTwo;
-               }else {                    
+               }else {                    // odd.
                     *(*matrix + j) = letter;
                }
                
@@ -423,7 +424,6 @@ char *concatStrToHeap(char firstName[], char lastName[], int strLength)
      return p_str;
 }
 
-
 // == function pointers ==.
 int sumCallBack(int a, int b){
      return a + b;
@@ -434,7 +434,6 @@ int doSum(int (*p_sumFunc)(int,int), int numOne, int numTwo)
 {
      return p_sumFunc(numOne,numTwo);
 }
-
 
 void pointerToFunc()
 {
@@ -459,13 +458,29 @@ void pointerToFunc()
 
 int main()
 {    
-     xArrLength = 30;
-     yArrLength = 150;          
-     char letterMatrix[xArrLength][yArrLength];
-     char (*p_letterMatrix)[yArrLength] = letterMatrix;
+     // xArrLength = 30;
+     // yArrLength = 150;          
+     // char letterMatrix[xArrLength][yArrLength];
+     // char (*p_letterMatrix)[yArrLength] = letterMatrix;
 
      // printMultiDimentionalArray(letterMatrix);
-     pointerToFunc();
+     // pointerToFunc();
+
+     unsigned dataSize = sizeof(int);
+     struct LinkedList *ages = createLinkedList(dataSize);
+     
+     int arrIntLength = 5;
+     int nums[] = {1,2,4,8,16};
+     for (int i = 0; i < arrIntLength; i++) {
+          addAtLast(ages, nums + i);     
+     }          
+     printLinkedList(ages,printIntLinkedList);
+     printf("=== current size of linked list: %d\n", ages->length);
+
+     int newAge = 32;
+     addAtHead(ages,&newAge);
+     printLinkedList(ages,printIntLinkedList);
+     printf("=== current size of linked list: %d\n", ages->length);
                
      return 0;
 }

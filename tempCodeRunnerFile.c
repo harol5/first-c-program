@@ -1,1 +1,1 @@
-printMultiDimentionalArray(letterMatrix);
+printLinkedList(stack);
