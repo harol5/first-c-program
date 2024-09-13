@@ -2,7 +2,27 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <stdint.h>
 #include "linked-list.c"
+
+#define ACTIVE 0x01
+#define BANNED 0x02
+#define ADMIN 0x04
+#define USER_FLAGS 0X05
+
+#define IS_ACTIVE(A,B) (A & B)
+
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  ((byte) & 0x80 ? '1' : '0'), \
+  ((byte) & 0x40 ? '1' : '0'), \
+  ((byte) & 0x20 ? '1' : '0'), \
+  ((byte) & 0x10 ? '1' : '0'), \
+  ((byte) & 0x08 ? '1' : '0'), \
+  ((byte) & 0x04 ? '1' : '0'), \
+  ((byte) & 0x02 ? '1' : '0'), \
+  ((byte) & 0x01 ? '1' : '0') 
+
 
 int xArrLength;
 int yArrLength;
@@ -133,6 +153,8 @@ void increment(int *number)
      // pass value by reference.
      *number = (*number) + 1;
 }
+
+// ========= ARRAYS ===============|.
 
 void arrays()
 {
@@ -318,6 +340,18 @@ void printMultiDimentionalArray(char matrix[xArrLength][yArrLength])
      
 }
 
+void testingMultiArray()
+{
+     xArrLength = 30;
+     yArrLength = 150;          
+     char letterMatrix[xArrLength][yArrLength];
+     char (*p_letterMatrix)[yArrLength] = letterMatrix;
+
+     printMultiDimentionalArray(letterMatrix);
+}
+
+// ========== MEMORY ALLOCATION ==========|.
+
 void memoryHeap()
 {
      // ============= malloc() =================== //
@@ -392,7 +426,7 @@ void concatStrToBuffer(char firtName[], char lastName[], char buffer[])
      *buffer = '\0';
 }
 
-// == Returning pointer from a function ==.
+// returning pointer from a function.
 char *concatStrToHeap(char firstName[], char lastName[], int strLength)
 {
      // allocate memory.
@@ -424,7 +458,7 @@ char *concatStrToHeap(char firstName[], char lastName[], int strLength)
      return p_str;
 }
 
-// == function pointers ==.
+// ========== FUNCTION POINTERS ==========|.
 int sumCallBack(int a, int b){
      return a + b;
 }
@@ -456,16 +490,9 @@ void pointerToFunc()
      printf("%d\n",sumThree);
 }
 
-int main()
-{    
-     // xArrLength = 30;
-     // yArrLength = 150;          
-     // char letterMatrix[xArrLength][yArrLength];
-     // char (*p_letterMatrix)[yArrLength] = letterMatrix;
-
-     // printMultiDimentionalArray(letterMatrix);
-     // pointerToFunc();
-
+// =========== LINKEDLIST ==============|.
+void testLinkedList()
+{
      unsigned dataSize = sizeof(int);
      struct LinkedList *ages = createLinkedList(dataSize);
      
@@ -481,6 +508,84 @@ int main()
      addAtHead(ages,&newAge);
      printLinkedList(ages,printIntLinkedList);
      printf("=== current size of linked list: %d\n", ages->length);
-               
+}
+
+// ===== WORKING WITH BITS =====
+
+void practicingBitWiseOperators()
+{
+     u_int8_t harolStatus = 12;
+
+     // -- BITWISE OPERATORS -|
+
+     // OR "|" -> Good for combining.
+     printf("banned user: %d\n", BANNED | USER_FLAGS );
+     /**
+      *     0010  -> BANNED(2)
+      *   | 0101  -> USER_FLAGS(5)
+      *   -------
+      *     0111  -> updated USER_FLAGS(7)      
+      */
+
+     // AND "&" -> Good for checking if flags are on in another set of bits.
+     printf("is user active? %d\n", IS_ACTIVE(ACTIVE, USER_FLAGS) );
+     /**
+      *     0001  -> is ACTIVE(1) flag on in user flags?
+      *   & 0101  -> crr user flags: USER_FLAGS(5)
+      *   -------
+      *     0001  -> return ACTIVE(1) flag, meaning is true.      
+      */
+
+     // XOR "^" -> Good for turn off a flag.
+     printf("ADMIN flag turned off. updated USER_FLAGS: %d\n", ADMIN ^ USER_FLAGS );
+     /**
+      *     0100  -> turn off ADMIN(4) flag,
+      *   ^ 0101  -> from crr user flags: USER_FLAGS(5)
+      *   -------
+      *     0001  -> return updated USER_FLAGS.
+      */
+
+     // SHIFT RIGHT ">>" -> shift bits to the right n times.
+     printf("SHIFT RIGHT '>>' -> is ADMIN flag turned on?: %d\n", USER_FLAGS >> 2 );
+     /**
+      *     0101  -> from crr user flags: USER_FLAGS(5)
+      *  >>    2  -> shift bits to the right 2 times.
+      *   -------
+      *     0001  -> return value of 3 flag.
+      */
+
+     // SHIFT LEFT ">>" -> shift bits to the right n times.
+     printf("SHIFT LEFT '<<' -> : %d\n", USER_FLAGS << 1 );
+     /**
+      *     0101  -> from crr user flags: USER_FLAGS(5)
+      *  <<    1  -> shift bits to the right 2 times.
+      *   -------
+      *     1010  -> (10) return value of 3 flag.
+      */
+
+}
+
+void practicingBitFields()
+{
+     // the underlaying type used in this struct bit field is 1 byte(8 bits).
+     // meaning, even though Im only using 5 bits on this bit field struct,
+     // its size is still 8 bits (byte).
+     struct UserFLags {
+          u_int8_t ACTIVE_FLAG: 1;
+          u_int8_t BANNED_FLAG: 1;
+          u_int8_t ADMIN_FLAG: 1;
+          u_int8_t OWNER_FLAG: 1;
+          u_int8_t PREMIUM_FLAG: 1;                    
+     };
+
+     struct UserFLags flags = {1,0,1,0,1};
+
+     printf("%d\n", flags.OWNER_FLAG);
+     printf("%lu\n", sizeof(flags));
+}
+
+int main()
+{       
+     practicingBitWiseOperators();
      return 0;
 }
