@@ -586,6 +586,37 @@ void practicingBitFields()
 
 int main()
 {       
-     practicingBitWiseOperators();
+     struct LinkedList *linkedList = createLinkedList(sizeof(char));
+     char name[] = "harld";
+     char *letter = name;
+     while (*letter != '\0')
+     {
+          addAtLast(linkedList,letter);
+          letter++;
+     }
+     
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     char missingLetter = 'o';
+     addAt(4,&missingLetter,linkedList);
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     missingLetter = 'g';
+     addAt(linkedList->length + 3, &missingLetter, linkedList);
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     missingLetter = 'z';
+     addAt(1, &missingLetter, linkedList);
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     int status = removeAt(1,linkedList);
+     printf("was node remove? %s\n", status == 1 ? "true" : "false");
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
      return 0;
 }
