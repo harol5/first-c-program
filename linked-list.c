@@ -106,8 +106,21 @@ void addAt(int position, void *data, struct LinkedList *linkedList)
 
 int removeAt(int position ,struct LinkedList *linkedList)
 {
-     // returns if position is out of range. 0 < position < linked list length.
-     if(position > linkedList->length || position < 1) return 0;          
+     //I must validate the position value.
+     // position cannot be 0 or less. (position < 1).
+     // position cannot be greater than the length of the linked List. (position > linkedList->length)
+     // returns if any of the conditions above are true.
+     if( position < 1 || position > linkedList->length|| linkedList->length == 0) return 0;      
+
+     // head node.
+     if( position == 1 )
+     {
+          struct Node *crrHead = linkedList->head;
+          linkedList->head = crrHead->next;
+          free(crrHead->data);
+          free(crrHead);
+          return 1;
+     }    
 
      int crrPosition = 1;
      struct Node *crrNode = linkedList->head;

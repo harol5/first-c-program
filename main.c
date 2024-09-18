@@ -510,6 +510,42 @@ void testLinkedList()
      printf("=== current size of linked list: %d\n", ages->length);
 }
 
+void testLinkedListOperations()
+{
+     struct LinkedList *linkedList = createLinkedList(sizeof(char));
+     char name[] = "harld";
+     char *letter = name;
+     while (*letter != '\0')
+     {
+          addAtLast(linkedList,letter);
+          letter++;
+     }
+     
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     char missingLetter = 'o';
+     addAt(4,&missingLetter,linkedList);
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     missingLetter = 'g';
+     addAt(linkedList->length + 3, &missingLetter, linkedList);
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     missingLetter = 'z';
+     addAt(1, &missingLetter, linkedList);
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+     int status = removeAt(1,linkedList);
+     printf("was node remove? %s\n", status == 1 ? "true" : "false");
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     printLinkedList(linkedList,printCharLinkedList);
+
+}
+
 // ===== WORKING WITH BITS =====
 
 void practicingBitWiseOperators()
@@ -584,39 +620,47 @@ void practicingBitFields()
      printf("%lu\n", sizeof(flags));
 }
 
-int main()
-{       
-     struct LinkedList *linkedList = createLinkedList(sizeof(char));
-     char name[] = "harld";
-     char *letter = name;
-     while (*letter != '\0')
+// =========== raw binary data ==============|.
+char *binaryToAscii(void *data, size_t size)
+{
+     unsigned char *byteData = (unsigned char*)data;
+     unsigned const char MAX_LETTER = 126;
+     unsigned const char MIN_LETTER = 32;
+     char *phrase = (char*)malloc(size + (size_t)1);
+
+     size_t i;
+     for ( i = 0; i < size; i++ )
      {
-          addAtLast(linkedList,letter);
-          letter++;
-     }
+          unsigned char letter = (unsigned char)byteData[i];
+          printf("==== byte number: %lu ====\n", i + 1);
+          printf("byte decimal value: %d\n", letter);
+          
      
-     printf("============ PRINTING YOUR LINKEDLIST =============\n");
-     printLinkedList(linkedList,printCharLinkedList);
+          if( letter > MAX_LETTER) letter = letter - MAX_LETTER;
 
-     char missingLetter = 'o';
-     addAt(4,&missingLetter,linkedList);
-     printf("============ PRINTING YOUR LINKEDLIST =============\n");
-     printLinkedList(linkedList,printCharLinkedList);
+          if( letter < MIN_LETTER) letter = letter + MIN_LETTER + i;
 
-     missingLetter = 'g';
-     addAt(linkedList->length + 3, &missingLetter, linkedList);
-     printf("============ PRINTING YOUR LINKEDLIST =============\n");
-     printLinkedList(linkedList,printCharLinkedList);
+          printf("true decimal char value: %d\n", letter);
+          printf("byte char value: %c\n", letter);
 
-     missingLetter = 'z';
-     addAt(1, &missingLetter, linkedList);
-     printf("============ PRINTING YOUR LINKEDLIST =============\n");
-     printLinkedList(linkedList,printCharLinkedList);
+          phrase[i] = letter;
+     }
 
-     int status = removeAt(1,linkedList);
-     printf("was node remove? %s\n", status == 1 ? "true" : "false");
-     printf("============ PRINTING YOUR LINKEDLIST =============\n");
-     printLinkedList(linkedList,printCharLinkedList);
+     phrase[i + (size_t)1] = '\0';
 
+     return phrase;
+}
+
+void practicingBinaryToAscii()
+{
+     u_int32_t num = 4023323328;
+     struct LinkedList ll;
+     char *phrase = binaryToAscii(&ll,sizeof(struct LinkedList));
+     printString(phrase);
+     free(phrase);
+}
+
+int main()
+{            
      return 0;
 }
