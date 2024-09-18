@@ -523,26 +523,37 @@ void testLinkedListOperations()
      
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
+     printf("current length: %d\n",linkedList->length);
 
      char missingLetter = 'o';
      addAt(4,&missingLetter,linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
+     printf("current length: %d\n",linkedList->length);
 
      missingLetter = 'g';
      addAt(linkedList->length + 3, &missingLetter, linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
+     printf("current length: %d\n",linkedList->length);
 
      missingLetter = 'z';
      addAt(1, &missingLetter, linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
+     printf("current length: %d\n",linkedList->length);
 
-     int status = removeAt(1,linkedList);
-     printf("was node remove? %s\n", status == 1 ? "true" : "false");
-     printf("============ PRINTING YOUR LINKEDLIST =============\n");
+     int status = removeAt(1,linkedList);     
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");     
      printLinkedList(linkedList,printCharLinkedList);
+     printf("was node remove? %s\n", status == 1 ? "true" : "false");
+     printf("current length: %d\n",linkedList->length);
+
+     int secondStatus = removeAt(linkedList->length,linkedList);     
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");     
+     printLinkedList(linkedList,printCharLinkedList);
+     printf("was node remove? %s\n", secondStatus == 1 ? "true" : "false");
+     printf("current length: %d\n",linkedList->length);
 
 }
 
@@ -661,6 +672,7 @@ void practicingBinaryToAscii()
 }
 
 int main()
-{            
+{           
+     testLinkedListOperations(); 
      return 0;
 }

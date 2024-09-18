@@ -102,6 +102,7 @@ void addAt(int position, void *data, struct LinkedList *linkedList)
 
      newNode->next = crrNode->next;
      crrNode->next = newNode;
+     linkedList->length++;     
 }
 
 int removeAt(int position ,struct LinkedList *linkedList)
@@ -117,6 +118,7 @@ int removeAt(int position ,struct LinkedList *linkedList)
      {
           struct Node *crrHead = linkedList->head;
           linkedList->head = crrHead->next;
+          linkedList->length--;     
           free(crrHead->data);
           free(crrHead);
           return 1;
@@ -133,6 +135,7 @@ int removeAt(int position ,struct LinkedList *linkedList)
      }
 
      prevNode->next = crrNode->next;
+     linkedList->length--;     
      free(crrNode->data);
      free(crrNode);
      return 1;
