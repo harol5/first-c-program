@@ -1,1 +1,1 @@
-printLinkedList(stack);
+printLinkedList

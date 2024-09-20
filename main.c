@@ -11,6 +11,7 @@
 #define USER_FLAGS 0X05
 
 #define IS_ACTIVE(A,B) (A & B)
+#define GET_BOOL(STATUS) ((STATUS) == 1 ? "true" : "false")
 
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)  \
@@ -512,48 +513,72 @@ void testLinkedList()
 
 void testLinkedListOperations()
 {
-     struct LinkedList *linkedList = createLinkedList(sizeof(char));
-     char name[] = "harld";
-     char *letter = name;
-     while (*letter != '\0')
-     {
-          addAtLast(linkedList,letter);
-          letter++;
-     }
+     // struct LinkedList *linkedList = createLinkedList(sizeof(char));
+     // char name[] = "harld";
+     // char *letter = name;
+     // while (*letter != '\0')
+     // {
+     //      addAtLast(linkedList,letter);
+     //      letter++;
+     // }
+
+     struct LinkedList *linkedList = NULL;
+
      
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
-     printf("current length: %d\n",linkedList->length);
+     // printf("current length: %d\n",linkedList->length);
 
      char missingLetter = 'o';
      addAt(4,&missingLetter,linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
-     printf("current length: %d\n",linkedList->length);
+     // printf("current length: %d\n",linkedList->length);
 
      missingLetter = 'g';
-     addAt(linkedList->length + 3, &missingLetter, linkedList);
+     int addAtStatus = addAt(15, &missingLetter, linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
-     printf("current length: %d\n",linkedList->length);
+     printf("was node added? %s\n", GET_BOOL(addAtStatus));
+     // printf("current length: %d\n",linkedList->length);
 
      missingLetter = 'z';
-     addAt(1, &missingLetter, linkedList);
+     int addAtStatus2 = addAt(1, &missingLetter, linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
-     printf("current length: %d\n",linkedList->length);
+     printf("was node added? %s\n", GET_BOOL(addAtStatus2));
+     // printf("current length: %d\n",linkedList->length);
 
      int status = removeAt(1,linkedList);     
      printf("============ PRINTING YOUR LINKEDLIST =============\n");     
      printLinkedList(linkedList,printCharLinkedList);
-     printf("was node remove? %s\n", status == 1 ? "true" : "false");
-     printf("current length: %d\n",linkedList->length);
+     printf("was node remove? %s\n", GET_BOOL(status));
+     // printf("current length: %d\n",linkedList->length);
 
-     int secondStatus = removeAt(linkedList->length,linkedList);     
+     int secondStatus = removeAt(7,linkedList);     
      printf("============ PRINTING YOUR LINKEDLIST =============\n");     
      printLinkedList(linkedList,printCharLinkedList);
-     printf("was node remove? %s\n", secondStatus == 1 ? "true" : "false");
-     printf("current length: %d\n",linkedList->length);
+     printf("was node remove? %s\n", GET_BOOL(secondStatus));
+     // printf("current length: %d\n",linkedList->length);
+
+     
+     printf("============ PRINTING YOUR LINKEDLIST =============\n");     
+     // printf("this is the head node data before emptying it: %c\n",*((char*)linkedList->head->data));
+     int emptyStatus = emptyLinkedList(linkedList);   
+     printf("was linked list emptied? %s\n", GET_BOOL(emptyStatus));  
+     printLinkedList(linkedList,printCharLinkedList);
+     // printf("current length: %d\n",linkedList->length);
+
+     int emptyStatus2 = emptyLinkedList(linkedList);   
+     printf("was linked list emptied? %s\n", GET_BOOL(emptyStatus2));  
+
+
+     int deleteLinkedListStatus = deleteLinkedList(&linkedList); 
+     printf("was linked list deleted? %s\n",GET_BOOL(deleteLinkedListStatus));
+
+     // another call to delete the same linked list will return 0 (false).
+     int deleteLinkedListStatus2 = deleteLinkedList(&linkedList);     
+     printf("was linked list deleted? %s\n",GET_BOOL(deleteLinkedListStatus2));
 
 }
 

@@ -26,8 +26,12 @@ struct LinkedList *createLinkedList(size_t data_size)
      return p_linkedList;
 };
 
-void addAtLast(struct LinkedList *linkedList, void *data)
+
+
+int addAtLast(struct LinkedList *linkedList, void *data)
 {     
+     if(!linkedList) return 0;
+
      // allocates space on the heap and initialize members.
      struct Node *newNode = malloc(sizeof(struct Node));     
      newNode->data = malloc(linkedList->data_size);
@@ -40,7 +44,7 @@ void addAtLast(struct LinkedList *linkedList, void *data)
      {          
           linkedList->head = newNode;
           linkedList->length++;          
-          return;
+          return 0;
      }
      
      struct Node *crrNode = linkedList->head;
@@ -50,11 +54,14 @@ void addAtLast(struct LinkedList *linkedList, void *data)
      }
 
      crrNode->next = newNode;
-     linkedList->length++;     
+     linkedList->length++;    
+     return 1; 
 };
 
-void addAtHead(struct LinkedList *linkedList, void *data)
+int addAtHead(struct LinkedList *linkedList, void *data)
 {
+     if(!linkedList) return 0;
+
      // allocates space on the heap and initialize members.
      struct Node *newNode = malloc(sizeof(struct Node));
      newNode->data = malloc(linkedList->data_size);
@@ -66,6 +73,8 @@ void addAtHead(struct LinkedList *linkedList, void *data)
      newNode->next = crrHead;
      linkedList->head = newNode;
      linkedList->length++;
+
+     return 1;
 }
 
 
@@ -74,18 +83,18 @@ void addAtHead(struct LinkedList *linkedList, void *data)
  * the length of the linked list or position <= 0, the node will be attached
  * to the end of the linked list.
  */
-void addAt(int position, void *data, struct LinkedList *linkedList)
+int addAt(int position, void *data, struct LinkedList *linkedList)
 {
+     if(!linkedList) return 0;
+
      if (position > linkedList->length || position <= 0) 
-     {
-          addAtLast(linkedList,data);
-          return;
+     {          
+          return addAtLast(linkedList,data);
      }
 
      if(position == 1)
-     {
-          addAtHead(linkedList, data);
-          return;
+     {          
+          return addAtHead(linkedList, data);
      }
 
      struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
@@ -103,10 +112,14 @@ void addAt(int position, void *data, struct LinkedList *linkedList)
      newNode->next = crrNode->next;
      crrNode->next = newNode;
      linkedList->length++;     
+
+     return 1;
 }
 
 int removeAt(int position ,struct LinkedList *linkedList)
 {
+     if(!linkedList) return 0;
+
      //I must validate the position value.
      // position cannot be 0 or less. (position < 1).
      // position cannot be greater than the length of the linked List. (position > linkedList->length)
@@ -148,33 +161,56 @@ void freeNode(struct Node *node)
      free(node);
 }
 
-void deleteLinkedList(struct LinkedList *linkedList)
+int emptyLinkedList(struct LinkedList *linkedList)
 {
-     if (linkedList->head)
-     {
-          freeNode(linkedList->head);
-     }
+     if(!linkedList) return 0;     
+     if (!linkedList->head) return 0;
+     freeNode(linkedList->head);    
+     linkedList->length = 0; 
+     linkedList->head = NULL;
+     return 1;
+}
 
-     free(linkedList);
+/**
+ * takes a pointer to a struct LinkedList pointer (struct LinkedList **linkedList)
+ * and free memory used by the linked list struct(pointer to struct) and sets the
+ * pointer variable used to store the linked list address(pointer to struct -
+ * LinkedList pointer) to NULL which helps to avoid Dangling Pointers.
+ */
+int deleteLinkedList(struct LinkedList **linkedList)
+{
+     if (!*linkedList) return 0;
+     printf("this !*linkedList returns: false\n");
+     if ((*linkedList)->head) {
+          printf("this (*linkedList)->head returns: true\n");
+          freeNode((*linkedList)->head);
+     }     
+     free(*linkedList);
+     *linkedList = NULL;
+     return 1;
 }
 
 
 
 
 // this function allows to pass a func pointer to print the desire data type properly.
-void printLinkedList(struct LinkedList *linkedList, void(*printer)(void *))
-{     
-     if (linkedList->length == 0) {
+int printLinkedList(struct LinkedList *linkedList, void(*printer)(void *))
+{               
+     if(!linkedList) return 0;
+
+     if ((linkedList)->length == 0) {
           printf("your linkedlist is empty\n");
-          return;
+          return 0;
      }
 
-     struct Node *node = linkedList->head;
+     struct Node *node = (linkedList)->head;
 
      while (node) {                    
           (*printer)(node->data);
           node = node->next;          
      }     
+
+     return 1;
 }
 
 // default int linked list printer.
