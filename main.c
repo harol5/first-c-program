@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "linked-list.c"
+#include "algorithm.c"
 
 #define ACTIVE 0x01
 #define BANNED 0x02
@@ -513,61 +514,62 @@ void testLinkedList()
 
 void testLinkedListOperations()
 {
-     // struct LinkedList *linkedList = createLinkedList(sizeof(char));
-     // char name[] = "harld";
-     // char *letter = name;
-     // while (*letter != '\0')
-     // {
-     //      addAtLast(linkedList,letter);
-     //      letter++;
-     // }
-
+     // Always initialize pointer to NULL if actual initialization of 
+     // of pointer must be done later or after using free() function.
      struct LinkedList *linkedList = NULL;
 
-     
+     linkedList = createLinkedList(sizeof(char));
+     char name[] = "harld";
+     char *letter = name;
+     while (*letter != '\0')
+     {
+          addAtLast(linkedList,letter);
+          letter++;
+     }
+          
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      char missingLetter = 'o';
      addAt(4,&missingLetter,linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      missingLetter = 'g';
      int addAtStatus = addAt(15, &missingLetter, linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
      printf("was node added? %s\n", GET_BOOL(addAtStatus));
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      missingLetter = 'z';
      int addAtStatus2 = addAt(1, &missingLetter, linkedList);
      printf("============ PRINTING YOUR LINKEDLIST =============\n");
      printLinkedList(linkedList,printCharLinkedList);
      printf("was node added? %s\n", GET_BOOL(addAtStatus2));
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      int status = removeAt(1,linkedList);     
      printf("============ PRINTING YOUR LINKEDLIST =============\n");     
      printLinkedList(linkedList,printCharLinkedList);
      printf("was node remove? %s\n", GET_BOOL(status));
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      int secondStatus = removeAt(7,linkedList);     
      printf("============ PRINTING YOUR LINKEDLIST =============\n");     
      printLinkedList(linkedList,printCharLinkedList);
      printf("was node remove? %s\n", GET_BOOL(secondStatus));
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      
      printf("============ PRINTING YOUR LINKEDLIST =============\n");     
-     // printf("this is the head node data before emptying it: %c\n",*((char*)linkedList->head->data));
+     printf("this is the head node data before emptying it: %c\n",*((char*)linkedList->head->data));
      int emptyStatus = emptyLinkedList(linkedList);   
      printf("was linked list emptied? %s\n", GET_BOOL(emptyStatus));  
      printLinkedList(linkedList,printCharLinkedList);
-     // printf("current length: %d\n",linkedList->length);
+     printf("current length: %d\n",linkedList->length);
 
      int emptyStatus2 = emptyLinkedList(linkedList);   
      printf("was linked list emptied? %s\n", GET_BOOL(emptyStatus2));  
@@ -697,7 +699,10 @@ void practicingBinaryToAscii()
 }
 
 int main()
-{           
-     testLinkedListOperations(); 
+{        
+     char arr[] ={'a','c','f','j','l','z'};        
+     printf("the char 'z' is located at %d\n", binarySearch(arr,'z',(int)(sizeof(arr) / sizeof(char))));
+     printf("the char 'f' is located at %d\n", binarySearch(arr,'f',(int)(sizeof(arr) / sizeof(char))));     
+     printf("the char 'q' is located at %d\n", binarySearch(arr,'q',(int)(sizeof(arr) / sizeof(char))));     
      return 0;
 }
